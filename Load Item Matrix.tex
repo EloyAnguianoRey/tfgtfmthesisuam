@@ -1,0 +1,142 @@
+    
+    
+
+    
+    \begin{Highligth}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+        
+        \PY{n}{df\PYZus{}items} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./Data/maestro.dat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{df\PYZus{}item\PYZus{}map} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}pickle}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{./ProcessedData/ItemMap}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Highligth}
+
+
+\begin{Highligth}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}1}]:}                                     item                         atributo1  \textbackslash{}
+        110519  e27f13d0d3bd4d0592688808803e5920  f5eb8001d45d47eda4cef6fa7826938e   
+        
+                                       atributo2  
+        110519  f24327c22138403abf6a28304fdc1d76  
+\end{Highligth}
+            
+    \begin{Highligth}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{\PYZsh{} Mapping Old Ids to New Ids}
+        \PY{c+c1}{\PYZsh{} Items that don\PYZsq{}t appear in the User\PYZhy{}Item Matrix are discarded}
+        \PY{n}{df\PYZus{}items} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{df\PYZus{}item\PYZus{}map}\PY{p}{,}\PY{n}{how}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{left\PYZus{}on} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{item}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{right\PYZus{}on}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Old\PYZus{}Item\PYZus{}Id}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{df\PYZus{}items} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{item}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Old\PYZus{}Item\PYZus{}Id}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{df\PYZus{}items} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{New\PYZus{}Item\PYZus{}Id}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{item}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{df\PYZus{}items} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n}{df\PYZus{}items}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{item}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{item}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}
+        \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Highligth}
+
+
+\begin{Highligth}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:}                           atributo1                         atributo2  item
+        8  471c38195c6a47c299fed4730dba3f05  257f14158bfd446481c852a12aa44227  2257
+\end{Highligth}
+            
+    \begin{Highligth}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{uniques} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atributo1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+        \PY{n}{df\PYZus{}a1\PYZus{}map} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Old\PYZus{}Atribute1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{uniques}\PY{p}{,}
+                                    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{New\PYZus{}Atribute1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{uniques}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}
+        
+        \PY{n}{uniques} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atributo2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+        \PY{n}{df\PYZus{}a2\PYZus{}map} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Old\PYZus{}Atribute2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{uniques}\PY{p}{,}
+                                    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{New\PYZus{}Atribute2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{uniques}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}
+        
+        \PY{n}{df\PYZus{}a1\PYZus{}map}\PY{o}{.}\PY{n}{to\PYZus{}pickle}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{./ProcessedData/ItemAtribute1Map}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{df\PYZus{}a2\PYZus{}map}\PY{o}{.}\PY{n}{to\PYZus{}pickle}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{./ProcessedData/ItemAtribute2Map}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Highligth}
+
+
+    \begin{Highligth}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{df\PYZus{}items} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{df\PYZus{}a1\PYZus{}map}\PY{p}{,}\PY{n}{how}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{left\PYZus{}on} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atributo1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{right\PYZus{}on}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Old\PYZus{}Atribute1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{df\PYZus{}items} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{df\PYZus{}a2\PYZus{}map}\PY{p}{,}\PY{n}{how}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{left\PYZus{}on} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atributo2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{right\PYZus{}on}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Old\PYZus{}Atribute2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{df\PYZus{}items} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atributo1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atributo2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Old\PYZus{}Atribute1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Old\PYZus{}Atribute2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{df\PYZus{}items} \PY{o}{=} \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{New\PYZus{}Atribute1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atributo1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{New\PYZus{}Atribute2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atributo2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Highligth}
+
+
+    \begin{Highligth}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{df\PYZus{}items}
+\end{Highligth}
+
+
+\begin{Highligth}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:}       item  atributo1  atributo2
+        0     2257          1          1
+        1     1233          2          2
+        2     7066          1          3
+        3     7687          1          4
+        4     2263          3          5
+        5     4590          1          3
+        6     1847          3          6
+        7     1161          1          3
+        8     4520          3          7
+        9     4640          3          7
+        10    2643          3          6
+        11    6059          1          4
+        12    3365          3          5
+        13    7602          3          5
+        14    4746          3          8
+        15    2281          3          8
+        16    3510          3          5
+        17    3519          3          5
+        18    5079          3          5
+        19    3899          3          9
+        20    4273          3         10
+        21    1457          3          6
+        22    5429          1          3
+        23    4328          3         11
+        24    6327          3         12
+        25     400          3          9
+        26    1754          3         10
+        27    4688          3          8
+        28    2688          1          3
+        29    4992          3         12
+        {\ldots}    {\ldots}        {\ldots}        {\ldots}
+        7750  4147          3          5
+        7751  5002          3          5
+        7752  5878          3          8
+        7753  2927          3         11
+        7754  1913          3         12
+        7755  4913          3          7
+        7756  3653          1          3
+        7757  2449          3          6
+        7758   745          1         11
+        7759  7480          3         10
+        7760  7388          3         10
+        7761  3841          1         13
+        7762  2521          3         11
+        7763  2511          3          8
+        7764  2673          3          5
+        7765  3260          2          6
+        7766  1826          1          3
+        7767  7660          3         10
+        7768  2284          3          8
+        7769  4694          3          6
+        7770  7386          3          8
+        7771  2453          1         16
+        7772  1564          3          6
+        7773  6709          1          3
+        7774  5471          1          3
+        7775  3155          3          5
+        7776   535          2         19
+        7777  3256          3          5
+        7778  4214          1         13
+        7779  3739          3         12
+        
+        [7780 rows x 3 columns]
+\end{Highligth}
+            
+    \begin{Highligth}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{df\PYZus{}items}\PY{o}{.}\PY{n}{to\PYZus{}pickle}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{./ProcessedData/ItemContent}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Highligth}
+
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    

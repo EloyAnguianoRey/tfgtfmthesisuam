@@ -91,7 +91,7 @@
 
 \newif\if@subtitlebool \@subtitleboolfalse
 
-\newif\if@jupyterbool \@jupiterboolfalse
+\newif\if@jupyterbool \@jupyterboolfalse
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%                                              %%%%%%%%%%%%%%%%%%%%%%%%
@@ -142,10 +142,10 @@
 
 % Struct control
 
-\DeclareOption{tfg}{\@thesisworkfalse \@tfmworkfalse \@tfgworktrue \@oldtfgtitlepagebooltrue}
-\DeclareOption{newtfg}{\@thesisworkfalse \@tfmworkfalse \@tfgworktrue \@oldtfgtitlepageboolfalse}
-\DeclareOption{tfm}{\@thesisworkfalse \@tfmworktrue \@tfgworkfalse \@oldtfgtitlepageboolfalse}
-\DeclareOption{thesis}{\@thesisworktrue \@tfmworkfalse \@tfgworkfalse \@oldtfgtitlepageboolfalse}
+\DeclareOption{tfg}{\@thesisworkfalse \@tfmworkfalse \@tfgworktrue}
+\DeclareOption{newtfg}{\@thesisworkfalse \@tfmworkfalse \@tfgworktrue}
+\DeclareOption{tfm}{\@thesisworkfalse \@tfmworktrue \@tfgworkfalse}
+\DeclareOption{thesis}{\@thesisworktrue \@tfmworkfalse \@tfgworkfalse}
 \DeclareOption{final}{\@finalmodebooltrue}
 \DeclareOption{printable}{\@printmodebooltrue}
 \DeclareOption{covers}{\@coversbooltrue}
@@ -230,7 +230,7 @@
 \@ifpackageloaded{etex}{}{\RequirePackage{etex}}
 \@ifpackageloaded{datetime}{}{\RequirePackage{datetime}}
 \@ifpackageloaded{lipsum}{}{\RequirePackage{lipsum}}
-\@ifpackageloaded{ucs}{}{\RequirePackage{[mathletters]{ucs}} % Extended unicode (utf-8) support
+%\@ifpackageloaded{ucs}{}{\RequirePackage{[mathletters]{ucs}} % Extended unicode (utf-8) support
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%                                              %%%%%%%%%%%%%%%%%%%%%%%%
@@ -252,32 +252,34 @@
     % internal navigation ('pdf bookmarks' for the table of contents,
 	% internal cross-reference links, web links for URLs, etc.)
 	
-    \ifpackageloaded{booktabs}{}{\RequirePackage{booktabs}}  % table support for pandoc > 1.12.2
-    \ifpackageloaded{enumitem}{}{\RequirePackage{[inline]{enumitem}}} % IRkernel/repr support (it uses the enumerate* environment)
-    \ifpackageloaded{ulem}{}{\RequirePackage{[normalem]{ulem}}} % ulem is needed to support strikethroughs (\sout)
+    \@ifpackageloaded{booktabs}{}{\RequirePackage{booktabs}}  % table support for pandoc > 1.12.2
+    %\@ifpackageloaded{enumitem}{}{\RequirePackage{[inline]{enumitem}}} % IRkernel/repr support (it uses the enumerate* environment)
+    %\@ifpackageloaded{ulem}{}{\RequirePackage{[normalem]{ulem}}} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
 
     \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
 	\else\Gin@nat@width\fi}
 	
-    \let\Oldincludegraphics\includegraphics
-    % Set max figure width to be 80% of text width, for now hardcoded.
-    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
-    % Ensure that by default, figures have no caption (until we provide a
-    % proper Figure object with a Caption API and a way to capture that
-	% in the conversion process - todo).
+    %\let\Oldincludegraphics\includegraphics
+    %% Set max figure width to be 80% of text width, for now hardcoded.
+    %\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    %% Ensure that by default, figures have no caption (until we provide a
+    %% proper Figure object with a Caption API and a way to capture that
+	%% in the conversion process - todo). 
 	
-    \DeclareCaptionLabelFormat{nolabel}{}
-    \captionsetup{labelformat=nolabel}
+    %\DeclareCaptionLabelFormat{nolabel}{}
+    %\captionsetup{labelformat=nolabel}
 
 
     \AtBeginDocument{%
         \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
-    }
+	}
+
     
     
     % Colors for the hyperref package
-    %\definecolor{urlcolor}{rgb}{0,.145,.698}
+    %\definecolor{urlcolor}
+    % Document parameters{rgb}{0,.145,.698}
     %\definecolor{linkcolor}{rgb}{.71,0.21,0.01}
     %\definecolor{citecolor}{rgb}{.12,.54,.11}
 
@@ -297,14 +299,16 @@
     \definecolor{ansi-cyan}{HTML}{60C6C8}
     \definecolor{ansi-cyan-intense}{HTML}{258F8F}
     \definecolor{ansi-white}{HTML}{C5C1B4}
-    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+	\definecolor{ansi-white-intense}{HTML}{A1A6B2}
+	\def\verbatim@font{\txtfont}
+	\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\footnotesize}
+	\def\verbatim@font{\txtfont}
 
     % commands and environments needed by pandoc snippets
     % extracted from the output of `pandoc -s`
     \providecommand{\tightlist}{%
       \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-    % Add ',fontsize=\small' for more characters per line
+    
     \newenvironment{Shaded}{}{}
     \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
     \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
@@ -347,9 +351,6 @@
     % Math Jax compatability definitions
     \def\gt{>}
     \def\lt{<}
-    % Document parameters
-    \title{AnalisisIngreso}
-    
     
     
 
@@ -463,17 +464,6 @@
     
     % Prevent overflowing lines due to hard-to-break entities
     \sloppy 
-    % Setup hyperref package
-    %\hypersetup{
-    %  breaklinks=true,  % so long urls are correctly broken across lines
-    %  colorlinks=true,
-    %  urlcolor=urlcolor,
-    %  linkcolor=linkcolor,
-    %  citecolor=citecolor,
-    %  }
-    % Slightly bigger margins than the latex defaults
-    
-    %\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
     
 \fi
 
@@ -571,29 +561,17 @@
 \facultylogo{}
 \faculty{}
 
-\if@oldtfgtitlepagebool
-	\if@epsbool \facultylogo{logoEPS} \facultylogowide{0.16\textwidth} \faculty{Escuela Politécnica Superior}\fi
-	\if@cienciasbool \facultylogo{logoCiencias} \facultylogowide{0.32\textwidth} \faculty{Facultad de Ciencias} \fi
-	\if@medicinabool \facultylogo{logoMedicina} \facultylogowide{0.32\textwidth} \faculty{Facultad de Medicina} \fi
-	\if@enfermeriabool \facultylogo{logoMedicina} \facultylogowide{0.32\textwidth} \faculty{Escuela de Enfermería} \fi
-	\if@fisioterapiabool \facultylogo{logoMedicina} \facultylogowide{0.32\textwidth} \faculty{Escuela de Fisioterapia} \fi
-	\if@psicologiabool \facultylogo{logoPsicologia} \facultylogowide{0.32\textwidth} \faculty{Facultad de Psicología} \fi
-	\if@filosofiabool \facultylogo{logoFilosofia} \facultylogowide{0.16\textwidth} \faculty{Facultad de Filosofia y Letras} \fi
-	\if@profesoradobool \facultylogo{logoProfesorado} \facultylogowide{0.32\textwidth} \faculty{Facultad de Filosofia y Letras} \fi
-	\if@derechobool \facultylogo{logoDerecho} \facultylogowide{0.32\textwidth} \faculty{Facultad de Derecho} \fi
-	\if@economicasbool \facultylogo{logoEconomicas} \facultylogowide{0.36\textwidth} \faculty{Facultad de Ciencias Económicas y Empresariales} \fi
-\else
-	\if@epsbool \facultylogo{logoEPS} \facultylogowide{0.4\textwidth} \faculty{Escuela Politécnica Superior}\fi
-	\if@cienciasbool \facultylogo{logoCiencias} \facultylogowide{0.8\textwidth} \faculty{Facultad de Ciencias} \fi
-	\if@medicinabool \facultylogo{logoMedicina} \facultylogowide{0.8\textwidth} \faculty{Facultad de Medicina} \fi
-	\if@enfermeriabool \facultylogo{logoMedicina} \facultylogowide{0.8\textwidth} \faculty{Escuela de Enfermería} \fi
-	\if@fisioterapiabool \facultylogo{logoMedicina} \facultylogowide{0.8\textwidth} \faculty{Escuela de Fisioterapia} \fi
-	\if@psicologiabool \facultylogo{logoPsicologia} \facultylogowide{0.8\textwidth} \faculty{Facultad de Psicología} \fi
-	\if@filosofiabool \facultylogo{logoFilosofia} \facultylogowide{0.4\textwidth} \faculty{Facultad de Filosofia y Letras} \fi
-	\if@profesoradobool \facultylogo{logoProfesorado} \facultylogowide{0.8\textwidth} \faculty{Facultad de Filosofia y Letras} \fi
-	\if@derechobool \facultylogo{logoDerecho} \facultylogowide{0.8\textwidth} \faculty{Facultad de Derecho} \fi
-	\if@economicasbool \facultylogo{logoEconomicas} \facultylogowide{0.9\textwidth} \faculty{Facultad de Ciencias Económicas y Empresariales} \fi
-\fi
+\if@epsbool \facultylogo{logoEPS} \facultylogowide{0.16\textwidth} \faculty{Escuela Politécnica Superior}\fi
+\if@cienciasbool \facultylogo{logoCiencias} \facultylogowide{0.32\textwidth} \faculty{Facultad de Ciencias} \fi
+\if@medicinabool \facultylogo{logoMedicina} \facultylogowide{0.32\textwidth} \faculty{Facultad de Medicina} \fi
+\if@enfermeriabool \facultylogo{logoMedicina} \facultylogowide{0.32\textwidth} \faculty{Escuela de Enfermería} \fi
+\if@fisioterapiabool \facultylogo{logoMedicina} \facultylogowide{0.32\textwidth} \faculty{Escuela de Fisioterapia} \fi
+\if@psicologiabool \facultylogo{logoPsicologia} \facultylogowide{0.32\textwidth} \faculty{Facultad de Psicología} \fi
+\if@filosofiabool \facultylogo{logoFilosofia} \facultylogowide{0.16\textwidth} \faculty{Facultad de Filosofia y Letras} \fi
+\if@profesoradobool \facultylogo{logoProfesorado} \facultylogowide{0.32\textwidth} \faculty{Facultad de Filosofia y Letras} \fi
+\if@derechobool \facultylogo{logoDerecho} \facultylogowide{0.32\textwidth} \faculty{Facultad de Derecho} \fi
+\if@economicasbool \facultylogo{logoEconomicas} \facultylogowide{0.36\textwidth} \faculty{Facultad de Ciencias Económicas y Empresariales} \fi
+
 
 \def\setnames{
 	\if@languagespa
@@ -2366,21 +2344,32 @@
 
 \def\@auxuniversityfaculty
 {
-	\if@oldtfgtitlepagebool
-		\begin{center}
-				\begin{Large}\textbf{UNIVERSIDAD AUTÓNOMA DE MADRID}\end{Large} \\
-				\begin{large}\textbf{\MakeUppercase{\@faculty}}\end{large}\vspace*{1\myem}
-		\end{center}
-	\else
-		\begin{center}
-			\begin{small}
-				Universidad Autónoma de Madrid \\
-				\@faculty\vspace*{1\myem}
-			\end{small}
-		\end{center}
-	\fi
+	\begin{center}
+			\begin{Large}\textbf{UNIVERSIDAD AUTÓNOMA DE MADRID}\end{Large} \\
+			\begin{large}\textbf{\MakeUppercase{\@faculty}}\end{large}\vspace*{1\myem}
+	\end{center}
 
-	\pdfmetavalues{\@author}{\@titleaux}{Trabajo fin de Grado}{\@auxkeywords,\@auxpalabrasclave}
+	\if@languagespa
+		\if@tfgwork
+			\pdfmetavalues{\@author}{\@titleaux}{Trabajo fin de Grado}{\@auxkeywords,\@auxpalabrasclave}
+		\else
+			\if@tfmwork
+				\pdfmetavalues{\@author}{\@titleaux}{Trabajo fin de Máster}{\@auxkeywords,\@auxpalabrasclave}
+			\else
+				\pdfmetavalues{\@author}{\@titleaux}{Tesis}{\@auxkeywords,\@auxpalabrasclave}
+			\fi 
+		\fi 
+	\else
+		\if@tfgwork
+			\pdfmetavalues{\@author}{\@titleaux}{Bachelor thesis}{\@auxkeywords,\@auxpalabrasclave}
+		\else
+			\if@tfmwork
+				\pdfmetavalues{\@author}{\@titleaux}{Master thesis}{\@auxkeywords,\@auxpalabrasclave}
+			\else
+				\pdfmetavalues{\@author}{\@titleaux}{Thesis}{\@auxkeywords,\@auxpalabrasclave}
+			\fi 
+		\fi 
+	\fi
 }
 
 \if@languagespa
@@ -2401,7 +2390,7 @@
 			\end{center}
 		\else	
 			\if@tfmwork
-				\pdfmetavalues{\@author}{\@titleaux}{Trabajo fin de Máster}{\@keywords,\@palabrasclave}
+				\pdfmetavalues{\@author}{\@titleaux}{Trabajo fin de Máster}{\@auxkeywords,\@auxpalabrasclave}
 				\begin{center}
 					\begin{small}
 						Proyecto para la obtención del título de \\
@@ -2415,7 +2404,7 @@
 					\end{small}
 				\end{center}
 			\else
-				\pdfmetavalues{\@author}{\@titleaux}{Tesis}{\@keywords,\@palabrasclave}
+				\pdfmetavalues{\@author}{\@titleaux}{Tesis}{\@auxkeywords,\@auxpalabrasclave}
 				\begin{center}
 					\begin{small}
 						Proyecto para la obtención del título de \\
@@ -3307,8 +3296,8 @@ coordinates {(#1,0) (#2,0)};
 	\thisfancyput*(\@posxt,\@posyt)
 	{
 		\color{uamgray} \coverfont
-		\if@tfgwork	\if@languagespa Trabajo fin de grado \else Degree work \fi \fi
-		\if@tfmwork \if@languagespa Trabajo fin de máster \else Master work \fi \fi
+		\if@tfgwork	\if@languagespa Trabajo fin de grado \else Bachelor thesis \fi \fi
+		\if@tfmwork \if@languagespa Trabajo fin de máster \else Master thesis \fi \fi
 		\if@thesiswork \if@languagespa Tesis \else Thesis \fi \fi
 	}
 }
@@ -3365,6 +3354,57 @@ coordinates {(#1,0) (#2,0)};
 	\imagepos{\@pxei}{\@pyei}{\@pwei}{logoUAMw}
 }
 
+\def\leveltext
+{
+	\if@languagespa
+		\if@tfgwork
+			\begin{center}\begin{large}\textbf{Grado en \@levelin}\end{large}\end{center}	
+		\else
+			\if@tfmwork
+				\begin{center}\begin{large}\textbf{Máster en \@levelin}\end{large}\end{center}
+			\else
+				\begin{center}\begin{large}\textbf{Doctor en \@levelin}\end{large}\end{center}
+			\fi
+		\fi
+	
+	\else
+		\if@tfgwork
+			\begin{center}\begin{large}\textbf{Bachelor as \@levelin}\end{large}\end{center}	
+		\else
+			\if@tfmwork
+				\begin{center}\begin{large}\textbf{Master as \@levelin}\end{large}\end{center}
+			\else
+				\begin{center}\begin{large}\textbf{PhD. as \@levelin}\end{large}\end{center}
+			\fi
+		\fi
+	\fi
+}
+
+\def\worktext
+{
+	\if@languagespa
+		\if@tfgwork
+			\begin{center}\begin{huge} \textbf{TRABAJO FIN DE GRADO} \end{huge}\end{center}
+		\else
+			\if@tfmwork
+				\begin{center}\begin{huge} \textbf{TRABAJO FIN DE MÁSTER} \end{huge}\end{center}
+			\else
+				\begin{center}\begin{huge} \textbf{TESIS} \end{huge}\end{center}
+			\fi
+		\fi
+	\else
+		\if@tfgwork
+			\begin{center}\begin{huge} \textbf{BACHELOR THESIS} \end{huge}\end{center}
+		\else
+			\if@tfmwork
+				\begin{center}\begin{huge} \textbf{MASTER THESIS} \end{huge}\end{center}
+			\else
+				\begin{center}\begin{huge} \textbf{PHD. THESIS} \end{huge}\end{center}
+			\fi
+		\fi
+	\fi
+}
+
 \def\titlepage
 {
 	\cleardoublepage
@@ -3382,102 +3422,70 @@ coordinates {(#1,0) (#2,0)};
 
 	\newdateformat{tfgdate}{\monthname[\THEMONTH] \THEYEAR}
 
-	\if@oldtfgtitlepagebool
-		\def\loctitlefont{\fontsize{12}{14} \usefont{T1}{pxr}{b}{n}\selectfont}
-		\loctitlefont
-		\if@languagespa
-			\vspace*{0.15\textheight}
-			\@auxuniversityfaculty
-			\vspace*{0.05\textheight}
-			\hfill
-			\logopgfimage[height=0.08\textheight]{\@facultylogo}
-			\hspace*{0.005\textwidth}
-			\logopgfimage[height=0.08\textheight]{logoUAM}
-			\hfill
-			\vspace*{0.05\textheight}
-			\begin{center}\begin{large}\textbf{Grado en \@levelin}\end{large}\end{center}
-			\vspace*{0.02\textheight}
-			\begin{center}\begin{huge} \textbf{TRABAJO FIN DE GRADO} \end{huge}\end{center}
-			\vspace*{0.02\textheight}
-			\begin{center}
-				\begin{minipage}{0.7\textwidth}
-					\begin{center}\begin{Large}\textbf{\@titleaux}\end{Large}\end{center}
-					\if@subtitlebool \begin{center}\begin{large}\textbf{\@subtitleaux}\end{large}\end{center} \fi
-				\end{minipage}
-			\end{center}
-			\vfill
-			\begin{center}
-				Autor: \@author \\ \mbox{}
-				Tutor: \@advisor \\ \mbox{}
-				\if@coadvisorbool Cotutor: \@coadvisor \\ \mbox{}\fi
-				\ifx\@speaker\empty\else
-					Ponente: \@speaker \\[1\myem]
-				\fi
-				\vspace*{0.02\textheight}
-				\begin{center}\tfgdate\today \end{center}
-			\end{center}
-		\else
-			\vspace*{0.15\textheight}
-			\@auxuniversityfaculty
-			\vspace*{0.05\textheight}
-			\hfill
-			\logopgfimage[height=0.08\textheight]{\@facultylogo}
-			\hspace*{0.005\textwidth}
-			\logopgfimage[height=0.08\textheight]{logoUAM}
-			\hfill
-			\vspace*{0.05\textheight}
-			\begin{center}\begin{large}\textbf{Degree as \@levelin}\end{large}\end{center}
-			\vspace*{0.02\textheight}
-			\begin{center}\begin{huge} \textbf{DEGREE WORK} \end{huge}\end{center}
-			\vspace*{0.02\textheight}
-			\begin{center}
-				\begin{minipage}{0.7\textwidth}
-					\begin{center}\begin{Large}\textbf{\@titleaux}\end{Large}\end{center}
-					\if@subtitlebool \begin{center}\begin{large}\textbf{\@subtitleaux}\end{large}\end{center} \fi
-				\end{minipage}
-			\end{center}
-			\vfill
-			\begin{center}
-				Author: \@author \\ \mbox{}
-				Advisor: \@advisor \\ \mbox{}
-				\if@coadvisorbool Coadvisor: \@coadvisor \\ \mbox{}\fi
-				\ifx\@speaker\empty\else
-					Ponente: \@speaker \\[1\myem]
-				\fi
-				\vspace*{0.02\textheight}
-				\begin{center}\tfgdate\today \end{center}
-			\end{center}
-		\fi
-	\else
+	\def\loctitlefont{\fontsize{12}{14} \usefont{T1}{pxr}{b}{n}\selectfont}
+	\loctitlefont
+	\if@languagespa
+		\vspace*{0.15\textheight}
+		\@auxuniversityfaculty
+		\vspace*{0.05\textheight}
+		\hfill
+		\logopgfimage[height=0.08\textheight]{\@facultylogo}
+		\hspace*{0.005\textwidth}
+		\logopgfimage[height=0.08\textheight]{logoUAM}
+		\hfill
+		\vspace*{0.05\textheight}
+		\leveltext
+		\vspace*{0.02\textheight}
+		\worktext
+		\vspace*{0.02\textheight}
 		\begin{center}
-			\begin{minipage}{0.15\textwidth}
-				\logopgfimage[width=\textwidth]{logoUAM}
-				\vspace*{0.1\textheight}
-			\end{minipage}\hspace*{0.05\textwidth}
-			\begin{minipage}{0.4\textwidth}
-				\@auxuniversityfaculty
-				\@auxvarheadtitle
-				\begin{center}\logopgfimage[width=\@facultylogowide]{\@facultylogo}\end{center}
-			\end{minipage}\hspace*{0.05\textwidth}
-			\begin{minipage}{0.15\textwidth}
-				\logopgfimage[width=\textwidth]{escudoUAM}
-				\vspace*{0.1\textheight}
+			\begin{minipage}{0.7\textwidth}
+				\begin{center}\begin{Large}\textbf{\@titleaux}\end{Large}\end{center}
+				\if@subtitlebool \begin{center}\begin{large}\textbf{\@subtitleaux}\end{large}\end{center} \fi
 			\end{minipage}
 		\end{center}
 		\vfill
 		\begin{center}
-			\mbox{} \txttitlefont \relax \@titleaux
+			Autor: \@author \\ \mbox{}
+			Tutor: \@advisor \\ \mbox{}
+			\if@coadvisorbool Cotutor: \@coadvisor \\ \mbox{}\fi
+			\ifx\@speaker\empty\else
+				Ponente: \@speaker \\[1\myem]
+			\fi
+			\vspace*{0.02\textheight}
+			\begin{center}\tfgdate\today \end{center}
 		\end{center}
-		\vspace*{0.5\myem}
+	\else
+		\vspace*{0.15\textheight}
+		\@auxuniversityfaculty
+		\vspace*{0.05\textheight}
+		\hfill
+		\logopgfimage[height=0.08\textheight]{\@facultylogo}
+		\hspace*{0.005\textwidth}
+		\logopgfimage[height=0.08\textheight]{logoUAM}
+		\hfill
+		\vspace*{0.05\textheight}
+		\leveltext
+		\vspace*{0.02\textheight}
+		\worktext
+		\vspace*{0.02\textheight}
 		\begin{center}
-			\begin{Large}
-				{\color{maincolor} \@author}
-			\end{Large}
+			\begin{minipage}{0.7\textwidth}
+				\begin{center}\begin{Large}\textbf{\@titleaux}\end{Large}\end{center}
+				\if@subtitlebool \begin{center}\begin{large}\textbf{\@subtitleaux}\end{large}\end{center} \fi
+			\end{minipage}
 		\end{center}
 		\vfill
-		\vfill
-		\vfill
-		\mbox{}
+		\begin{center}
+			Author: \@author \\ \mbox{}
+			Advisor: \@advisor \\ \mbox{}
+			\if@coadvisorbool Coadvisor: \@coadvisor \\ \mbox{}\fi
+			\ifx\@speaker\empty\else
+				Ponente: \@speaker \\[1\myem]
+			\fi
+			\vspace*{0.02\textheight}
+			\begin{center}\tfgdate\today \end{center}
+		\end{center}
 	\fi
 
 	\newpage
